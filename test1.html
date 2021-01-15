@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .wrap {
+                display: block;
+                font-family: sans-serif;
+                font-size: 115%;
+                width: fit-content;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 50px;
+                border: solid black;      
+                height: 600px;
+            }
+            .box {
+                width: 20px;
+                height: 20px;  
+            }
+            .container {
+                display: inline-block;
+                width: fit-content;
+                border: none;
+            }
+            img {
+                display: block;
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+    </head>
+    <script>
+        let number = 30;
+        class movement {
+            static moveLeft() {
+                if(document.getElementById("box" + (start.x - 1) + "." + start.y).getAttribute('kind') == 'item') {
+                    ahri.weapon = true;
+                }
+                if(start.x != 0 && document.getElementById("box" + (start.x - 1) + "." + start.y).getAttribute('status') == 'non-block') {
+                    if(document.getElementById("box" + (start.x - 1) + "." + start.y).getAttribute('kind') != 'monster' || ahri.weapon == true) {
+                        document.getElementById("box" + start.x + "." + start.y).innerHTML = "";
+                        start.x--;
+                        ahri.createThings(start.x, start.y);
+                    }
+                }
+            }
+
+            static moveRight(number) {
+                if(document.getElementById("box" + (start.x + 1) + "." + start.y).getAttribute('kind') == 'item') {
+                    ahri.weapon = true;
+                }
+                if(start.x != (number - 1) && document.getElementById("box" + (start.x + 1) + "." + start.y).getAttribute('status') == 'non-block') {
+                    if(document.getElementById("box" + (start.x + 1) + "." + start.y).getAttribute('kind') != 'monster' || ahri.weapon == true) {
+                        document.getElementById("box" + start.x + "." + start.y).innerHTML = "";
+                        start.x++;
+                        ahri.createThings(start.x, start.y);
+                    }
+                }
+            }
+
+            static moveUp() {
+                if(document.getElementById("box" + start.x + "." + (start.y - 1)).getAttribute('kind') == 'item') {
+                    ahri.weapon = true;
+                }
+                if(start.y != 0 && document.getElementById("box" + start.x + "." + (start.y - 1)).getAttribute('status') == 'non-block') {
+                    if(document.getElementById("box" + start.x + "." + (start.y - 1)).getAttribute('kind') != 'monster' || ahri.weapon == true) {
+                        document.getElementById("box" + start.x + "." + start.y).innerHTML = "";
+                        start.y--;
+                        ahri.createThings(start.x, start.y);
+                    }
+                }
+            }
+
+            static moveDown(number) {
+                if(document.getElementById("box" + start.x + "." + (start.y + 1)).getAttribute('kind') == 'item') {
+                    ahri.weapon = true;
+                }
+                if(start.y != (number - 1) && document.getElementById("box" + start.x + "." + (start.y + 1)).getAttribute('status') == 'non-block') {
+                    if(document.getElementById("box" + start.x+ "." + (start.y + 1)).getAttribute('kind') != 'monster' || ahri.weapon == true) {
+                        document.getElementById("box" + start.x + "." + start.y).innerHTML = "";
+                        start.y++;
+                        ahri.createThings(start.x, start.y);
+                    }
+                }
+            }
+        }
+        class mazeGame {
+                static makeMaze(number) {
+                    for(let i = 0; i < number; i++) {
+                        document.getElementById('wrapper').innerHTML += "<div class='container' id='col" + i + "'>";
+                        for(let j = 0; j < number; j++) {
+                            document.getElementById('col' + i).innerHTML += "<div class='box' id='box" + i + "." + j + "' status='block' style='background-color: white; cursor:'></div>";
+                        }
+                        document.getElementById('wrapper').innerHTML += "</div>";
+                    }
+                }
+                static drawMazeFrame(col, number) {
+                    document.getElementById("box" + (number - 1) + "." + 0).style.backgroundColor = "black";
+                    document.getElementById("box" + 0 + "." + (number - 1)).style.backgroundColor = "black";
+                    for(let i = col; i < number - col; i++) {
+                        document.getElementById("box" + i + "." + col).style.backgroundColor = "black";
+                        document.getElementById("box" + col + "." + i).style.backgroundColor = "black";
+                        document.getElementById("box" + ((number - 1) - col ) + "." + i).style.backgroundColor = "black";
+                        document.getElementById("box" + i + "." + ((number - 1) - col)).style.backgroundColor = "black";
+                    }
+                }
+
+                static putWay(col, number) {
+                    let n = Math.floor(Math.random() * ((number - 2) - col*2) + col + 1);
+                    document.getElementById("box" + col + "." + n).style.backgroundColor = "white";
+                    if(i % 2 == 1) {
+                        document.getElementById("box" + (col - 1) + "." + (n + 1)).style.backgroundColor = "black";
+                    }
+                    n = Math.floor(Math.random() * ((number - 4) - col*2) + col + 2);
+                    document.getElementById("box" + n + "." + col).style.backgroundColor = "white";
+                    if(i % 2 == 1) {
+                        document.getElementById("box" + (n + 1) + "." + (col + 1)).style.backgroundColor = "black";
+                    }
+                    n = Math.floor(Math.random() * ((number - 3) - col*2) + col + 2);
+                    document.getElementById("box" + ((number - 1) - col) + "." + n).style.backgroundColor = "white";
+                    document.getElementById("box" + (number - col) + "." + (n - 1)).style.backgroundColor = "black";
+                    n = Math.floor(Math.random() * ((number - 6) - col*2) + col + 4);
+                    document.getElementById("box" + n + "." + ((number - 1) - col)).style.backgroundColor = "white";
+                    if(i % 2 == 0) {
+                        document.getElementById("box" + (n - 1) + "." + (number - col)).style.backgroundColor = "black";
+                        } else {
+                            document.getElementById("box" + (n + 1) + "." + (number - col)).style.backgroundColor = "black";
+                        }
+                    i++;
+                }
+            }
+            class Player {
+                constructor(name) {
+                    this.name = name;
+                }
+                getName() {
+
+                }
+                getPoint() {
+
+                }
+                getTime() {
+                    
+                }
+            }
+            class things {
+                constructor(image) {
+                    this.image = image;
+                }
+                createThings(x, y) {
+                    return document.getElementById("box" + x + "." + y).innerHTML = this.image;
+                }
+            }
+            class mainCharacter extends things {
+                constructor(image) {
+                    super(image);
+                    this.weapon = false;
+                    this.alive = true;
+                }
+            }
+            class monster extends things {
+                constructor(image) {
+                    super(image);
+                    this.alive = true;
+                }
+                createThings(x, y) {
+                    document.getElementById("box" + x + "." + y).setAttribute('kind', 'monster');
+                    return document.getElementById("box" + x + "." + y).innerHTML = this.image;
+                }
+
+            }
+            class stuff extends things {
+                constructor(image) {
+                    super(image);
+                }
+                createThings(x, y) {
+                    document.getElementById("box" + x + "." + y).setAttribute('kind', 'item');
+                    return document.getElementById("box" + x + "." + y).innerHTML = this.image;
+                }
+            }
+
+    </script>
+    <body>
+        <form>
+            <input style = "font-size: 20px; margin-left: 40%; margin-top: 1%; outline: none; resize: none; overflow: auto; height: 32px; width: 350px;" placeholder="Input Player Name Here..." ></input>
+            <input type="submit" value="Submit" style="font-size: 20px; border: none; background-color: #4CAF50; padding: 8px 20px; color: white; cursor: pointer; top: 100px">
+        </form>   
+        <div style = "text-align: center; font-size: 39px; margin-top: 30px;"> Press <button style="font-size: 20px; margin-left: 0%; border: none; background-color: #4CAF50; padding: 8px 20px; color: white; cursor: pointer;" onclick="showHint(number)">Here</button> to show hint</div>
+        <div style="margin-left: 34%">
+            <div style="display: inline-block;">
+                <button style="font-size: 20px; margin-top: 25px; border: none; background-image: linear-gradient(150deg, #662D8C, #ED1E79) ; padding: 8px 20px; color: white; cursor: pointer; width: 300px;" 
+                onclick="changeToMonster()">Click to create Monster</button>
+            </div>
+            <div style="display: inline-block;">
+                <button style="font-size: 20px; margin-top: 25px; border: none; background-image: linear-gradient(150deg, #2E3192, #1BFFFF); padding: 8px 20px; color: white; cursor: pointer; width: 300px; margin-left: 20px;" 
+                onclick ="changeToItem()">Click to create Item</button>
+            </div>
+            <div style="margin-left: 15%; margin-top: 5px;">(Then click a white place in maze)</div>
+        </div>
+        <div class="wrap" id="wrapper">
+            <script>
+                mazeGame.makeMaze(number);
+            </script>               
+        </div>
+        <div>
+            <button style="font-size: 20px; margin-top: 25px; border: none; background-color: #4CAF50; padding: 8px 20px; color: white; cursor: pointer; width: 300px; margin-left: 42%;" onclick="location.reload()">Restart</button>
+        </div>
+    </body>
+    <script>
+        let ahriImage = "<img src='https://www.pngkey.com/png/full/138-1383596_arcade-ahri-arcade-ahri-icon.png'>"
+        let monsterImage = "<img src='https://ih1.redbubble.net/image.1164009017.0162/st,small,507x507-pad,600x600,f8f8f8.jpg'>";
+        let itemImage ="<img src='https://external-preview.redd.it/tgSU2nPcJLXvivdgZV2JGaMLwUiSj0ynbH4To8kKK10.png?auto=webp&s=1a5e4cdce57e128ae17fa8fd595247eb207aeb37'>"
+
+        let ahri = new mainCharacter(ahriImage);
+        let baron = new monster(monsterImage);
+        let rabadon = new stuff(itemImage);
+
+        let thing = "";
+        let createThing = (i, j) => {
+            if(thing == "monster") {
+                baron.createThings(i, j);
+            } else if(thing == "item") {
+                rabadon.createThings(i, j);
+            }
+        }
+        
+        let start = {
+            x: 0,
+            y: 0
+        }
+
+        let end = {
+            x: 0,
+            y: 0
+        }
+        
+        function changeToMonster() {
+            thing = "monster";
+        }
+        function changeToItem() {
+            thing = "item";
+        }
+         
+        function createMatrix() {
+            for(let i = 0; i < number; i++) {
+                for(let j = 0; j < number; j++) {
+                    if(document.getElementById("box" + i + "." + j).style.backgroundColor != "black") {
+                        document.getElementById("box" + i + "." + j).setAttribute('status', 'non-block');
+                        document.getElementById("box" + i + "." + j).setAttribute('onclick', 'createThing('+ i + ',' + j + ')');
+                        document.getElementById("box" + i + "." + j).style.cursor = "pointer";
+                    }
+                }
+            }
+        }  
+        let i = 1;
+
+        function setUp(number) {
+            end.x = number - 1;
+            end.y = number - 1 ;
+            document.getElementById("box" + Math.floor(Math.random() * ((number - 2) - 1*2) + 1 + 1) + "." + 1).style.backgroundColor = "white";
+            document.getElementById("box" + (number - 2) + "." + (number - 3)).style.backgroundColor = "white";
+            document.getElementById("box" + (number - 5) + "." + (number - 4)).style.backgroundColor = "white";
+            document.getElementById("box" + (number - 21) + "." + (number - 11)).style.backgroundColor = "white";
+            ahri.createThings(start.x, start.y);
+            document.getElementById("box" + end.x + "." + end.y).innerHTML = "<img src='https://1.bp.blogspot.com/-6uvLKIPjQiI/XwjE70-T2rI/AAAAAAABodk/52T1lDII8kgHpayfR4GfJskttqQaZiQvQCLcBGAsYHQ/s200/SpiritBlossom2020_KanmeiOrb_490px.png'>";
+        }
+        window.addEventListener("keydown", function(event) {
+            switch(event.key) {
+                case 'ArrowUp': 
+                    movement.moveUp();
+                    break;
+                case 'ArrowDown' : 
+                    movement.moveDown(number);
+                    break;
+                case 'ArrowLeft' : 
+                    movement.moveLeft();
+                    break;
+                case 'ArrowRight' : 
+                    movement.moveRight(number);
+                    break;
+            }
+            if(start.x == end.x && start.y == end.y) {
+                alert("YOU WIN!!!!!!!!!!!!!!!");
+            }
+        })  
+        for(let i = 1; i <= (number/2 - 2); i+=2) {
+            mazeGame.drawMazeFrame(i, number);
+        }
+        for(let i = 3; i <= (number/2 - 4); i+=2) {
+            mazeGame.putWay(i, number);
+        }
+
+        setUp(number);
+        createMatrix();
+
+        function makeHint(number) {
+            this.maze = new Array(number).fill(0).map(() => new Array(number).fill(0));
+            this.visited = new Array(number)
+                .fill(false)
+                .map(() => new Array(number)
+                .fill(false));
+            this.sol = new Array(number).fill(false).map(() => new Array(number).fill(false));
+
+            for (let i = 0; i < number; i++) {
+                for (let j = 0; j < number; j++) {
+                    if (document.getElementById("box" + i + "." + j).getAttribute("status") !="non-block") {
+                    maze[i][j] = 1;
+                    }
+                }
+            }
+        }
+
+        makeHint(number);
+
+        function find(x, y, number) {
+        if (x == (number - 1) && y == (number - 1)) {
+            return true;
+        }
+        if (maze[x][y] == 1 || visited[x][y]) {
+            return false;
+        }
+        visited[x][y] = true;
+        // check left
+        if (y > 0) {
+            if (find(x, y - 1, number)) {
+            sol[x][y] = true;
+            return true;
+            }
+        }
+        // check right
+        if (y < (number - 1)) {
+            if (find(x, y + 1, number)) {
+            sol[x][y] = true;
+            return true;
+            }
+        }
+        
+        // check up
+        if (x > 0) {
+            if (find(x - 1, y, number)) {
+            sol[x][y] = true;
+            return true;
+            }
+        }
+
+        //check down
+        if (x < (number - 1)) {
+            if (find(x + 1, y, number)) {
+                sol[x][y] = true;
+                return true;
+            }
+        } 
+        return false;
+        }
+
+        function showHint(number) {
+            if (find(0, 0, number)) {
+                sol[0][0] = false;
+                for (let i = 0; i < number; i++) {
+                    for (let j = 0; j < number; j++) {
+                        if (sol[i][j]) {
+                        document.getElementById("box" + i + "." + j).style.backgroundColor ="rgb(254,216,177)";
+                        }
+                    }
+                }
+            } else {
+                alert("This Maze Have No Exit");
+                location.reload();
+            }
+        }
+    </script>
+</html>
