@@ -129,62 +129,56 @@
                     i++;
                 }
             }
-            class Player {
-                constructor(name) {
-                    this.name = name;
-                }
-                getName() {
 
-                }
-                getPoint() {
+        class things {
+            constructor(image) {
+                this.image = image;
+            }
+            createThings(x, y) {
+                return document.getElementById("box" + x + "." + y).innerHTML = this.image;
+            }
+        }
 
-                }
-                getTime() {
-                    
-                }
+        class mainCharacter extends things {
+            constructor(image) {
+                super(image);
+                this.weapon = false;
+                this.alive = true;
             }
-            class things {
-                constructor(image) {
-                    this.image = image;
-                }
-                createThings(x, y) {
-                    return document.getElementById("box" + x + "." + y).innerHTML = this.image;
-                }
+        }
+        class monster extends things {
+            constructor(image) {
+                super(image);
+                this.alive = true;
             }
-            class mainCharacter extends things {
-                constructor(image) {
-                    super(image);
-                    this.weapon = false;
-                    this.alive = true;
-                }
-            }
-            class monster extends things {
-                constructor(image) {
-                    super(image);
-                    this.alive = true;
-                }
-                createThings(x, y) {
-                    document.getElementById("box" + x + "." + y).setAttribute('kind', 'monster');
-                    return document.getElementById("box" + x + "." + y).innerHTML = this.image;
-                }
-
-            }
-            class stuff extends things {
-                constructor(image) {
-                    super(image);
-                }
-                createThings(x, y) {
-                    document.getElementById("box" + x + "." + y).setAttribute('kind', 'item');
-                    return document.getElementById("box" + x + "." + y).innerHTML = this.image;
-                }
+            createThings(x, y) {
+                document.getElementById("box" + x + "." + y).setAttribute('kind', 'monster');
+                return document.getElementById("box" + x + "." + y).innerHTML = this.image;
             }
 
+        }
+
+        class stuff extends things {
+            constructor(image) {
+                super(image);
+            }
+            createThings(x, y) {
+                document.getElementById("box" + x + "." + y).setAttribute('kind', 'item');
+                return document.getElementById("box" + x + "." + y).innerHTML = this.image;
+            }
+        }
+
+        class money extends things {
+            constructor(image) {
+                super(image);
+            }
+            createThings(x, y) {
+                document.getElementById("box" + x + "." + y).setAttribute('kind', 'money');
+                return document.getElementById("box" + x + "." + y).innerHTML = this.image;
+            }
+        }
     </script>
     <body>
-        <form>
-            <input style = "font-size: 20px; margin-left: 40%; margin-top: 1%; outline: none; resize: none; overflow: auto; height: 32px; width: 350px;" placeholder="Input Player Name Here..." ></input>
-            <input type="submit" value="Submit" style="font-size: 20px; border: none; background-color: #4CAF50; padding: 8px 20px; color: white; cursor: pointer; top: 100px">
-        </form>   
         <div style = "text-align: center; font-size: 39px; margin-top: 30px;"> Press <button style="font-size: 20px; margin-left: 0%; border: none; background-color: #4CAF50; padding: 8px 20px; color: white; cursor: pointer;" onclick="showHint(number)">Here</button> to show hint</div>
         <div style="margin-left: 34%">
             <div style="display: inline-block;">
@@ -264,6 +258,7 @@
             ahri.createThings(start.x, start.y);
             document.getElementById("box" + end.x + "." + end.y).innerHTML = "<img src='https://1.bp.blogspot.com/-6uvLKIPjQiI/XwjE70-T2rI/AAAAAAABodk/52T1lDII8kgHpayfR4GfJskttqQaZiQvQCLcBGAsYHQ/s200/SpiritBlossom2020_KanmeiOrb_490px.png'>";
         }
+
         window.addEventListener("keydown", function(event) {
             switch(event.key) {
                 case 'ArrowUp': 
@@ -281,8 +276,10 @@
             }
             if(start.x == end.x && start.y == end.y) {
                 alert("YOU WIN!!!!!!!!!!!!!!!");
+                location.reload();
             }
         })  
+
         for(let i = 1; i <= (number/2 - 2); i+=2) {
             mazeGame.drawMazeFrame(i, number);
         }
